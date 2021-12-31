@@ -1,3 +1,4 @@
+// save reference to important DOM elements
 var textEl = $('.description');
 var saveBtns = $(".saveBtn");
 var dayDisplayEl = $('#currentDay');
@@ -12,11 +13,13 @@ var hour4pm = $('#hour-4pm');
 var hour5pm = $('#hour-5pm');
 var nowHour = moment().format('h a')
 
+// handle displaying the time
 function displayTime() {
     var today = moment().format('dddd, MMMM Do, h:mm:ss a');
     dayDisplayEl.text(today);
 }
 
+// compare hours
 function compareHour() {
     if (nowHour == '9 am') {
         hour9am.addClass('present');
@@ -64,15 +67,17 @@ function compareHour() {
     }
 
 }
-
-saveBtns.on('click', function(event) {
+// handle events saving
+function handleSubmit(event) {
     for (var j = 0; j < 9; j++) {
         event.preventDefault();
         var saveInfo = textEl.eq(j).val();
         localStorage.setItem('plan' + j, saveInfo);
     }
-})
+}
 
+
+// get stored infomation from localStorage
 function init() {
     for (var i = 0; i < 9; i++) {
         var getInfo = localStorage.getItem('plan' + i);
@@ -80,7 +85,9 @@ function init() {
 
     }
 }
-
+// Call init to retrieve data and render it to the page on load
 init();
 compareHour();
 setInterval(displayTime, 1000);
+// Add click event to save button
+saveBtns.on('click', handleSubmit)
